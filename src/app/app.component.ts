@@ -1,7 +1,6 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { SampleDialogComponent } from './sample-dialog/sample-dialog.component';
 import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
@@ -16,25 +15,11 @@ export class AppComponent implements OnInit {
 
   toggleControl = new FormControl(false);
 
-  constructor(private dialog: MatDialog, private overlay: OverlayContainer) { }
+  constructor(private overlay: OverlayContainer) { }
 
   ngOnInit(): void {
-    this.toggleControl.valueChanges.subscribe((darkMode) => {
-      const darkClassName = 'darkMode';
-      this.className = darkMode ? darkClassName : '';
-      if (darkMode) {
-        this.overlay.getContainerElement().classList.add(darkClassName);
-      } else {
-        this.overlay.getContainerElement().classList.remove(darkClassName);
-      }
-    });
-  }
-
-  showDialog(): void {
-    this.dialog.open(SampleDialogComponent,
-      {
-        width: '500px'
-      });
+    console.log("this is appComponent");
+    
   }
 
 }
