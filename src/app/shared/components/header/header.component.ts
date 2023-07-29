@@ -23,7 +23,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(private toggleService: ToggleService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.toggleService.setToggleState(this.darkMode);
+  }
   toggleValue() {
     this.darkMode = !this.darkMode;
     console.log('Toggle value in the header component:', this.darkMode);

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
 import { ToggleService } from 'src/app/toggle.service';
@@ -9,11 +9,12 @@ import { ToggleService } from 'src/app/toggle.service';
   styleUrls: ['./area.component.scss'],
 })
 export class AreaComponent implements OnInit {
-  chartOptions!: {};
+  chartOptions!: any;
   @Input() data: any = [];
 
   Highcharts = Highcharts;
   isDarkMode: boolean = false;
+  categories: any;
 
   constructor(private toggleService: ToggleService) {}
 
@@ -68,6 +69,7 @@ export class AreaComponent implements OnInit {
 
       // Additional styling for the chart elements
       xAxis: {
+        categories: this.categories,
         labels: {
           style: {
             color: '#333333', // X-axis labels color
@@ -134,6 +136,7 @@ export class AreaComponent implements OnInit {
 
       // Additional styling for the chart elements
       xAxis: {
+        categories: this.categories,
         labels: {
           style: {
             color: '#ffffff', // X-axis labels color
@@ -159,6 +162,43 @@ export class AreaComponent implements OnInit {
         },
       },
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['data']) {
+      console.log('change[data] = ');
+      console.log(changes['data']);
+      console.log('so this new data is: ');
+      console.log(this.data);
+      console.log(this.data[0]?.data);
+      const transformedTimeData = this.data[0]?.time.map((time_tmp: any) => {
+        const time = new Date(time_tmp.seconds * 1000); // Convert the seconds to milliseconds
+        const formattedTime = time.toLocaleString(); // Format the time in a comprehensive format, adjust the locale as per your needs
+        return formattedTime;
+      });
+      this.data = [
+        {
+          name: 'Temperatures',
+          data: this.data[0]?.data,
+        },
+      ];
+      console.log("transformedTimeData", transformedTimeData);
+      
+      this.categories = transformedTimeData;
+
+      this.updateChartOptions();
+
+      console.log('chartoptions');
+      console.log(this.chartOptions);
+    }
+  }
+
+  updateChartOptions() {
+    if (this.isDarkMode) {
+      this.setDarkModeOptions();
+    } else {
+      this.setLightModeOptions();
+    }
   }
 
   ngOnInit() {

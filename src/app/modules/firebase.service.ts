@@ -27,7 +27,9 @@ export class FirebaseService {
           actions.map((a) => {
             let temperatureData = a.payload.doc.data() as temperatureModel;
             let id = a.payload.doc.id;
-            console.log("temp data: " + temperatureData);
+            console.log("temp data: ");
+            console.log(temperatureData);
+            
             
             return {
               id,
@@ -36,6 +38,19 @@ export class FirebaseService {
           })
         )
       );
+  }
+
+  addFakeTemperatureData() {
+    const fakeData = [
+      { temperature: 25, time: { seconds: 1676011320, nanoseconds: 211000000 } },
+      { temperature: 30, time: { seconds: 1676014320, nanoseconds: 311000000 } },
+      { temperature: 35, time: { seconds: 1676017320, nanoseconds: 411000000 } },
+      // Add more fake data as needed
+    ];
+
+    fakeData.forEach((data) => {
+      this.fireStoreService.collection<temperatureModel>('TemperatureData').add(data);
+    });
   }
 
 }
