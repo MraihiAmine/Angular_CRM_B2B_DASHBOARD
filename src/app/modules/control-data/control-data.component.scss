@@ -1,0 +1,45 @@
+.stats-cards {
+    .mat-card {
+      overflow: hidden;
+    }
+  }
+
+  .button-toggle {
+    margin-bottom: 55px !important;
+  }
+
+  .awesome-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  
+
+  /* slider-custom.css */
+
+/* Change the track color */
+.mat-slider-track-fill {
+  background-color: #007bff; /* Replace with your desired track color */
+}
+
+/* Change the thumb color */
+.mat-slider-thumb {
+  background-color: #007bff; /* Replace with your desired thumb color */
+}
+
+/* Change the active track color */
+.mat-slider-track-background-active, .mat-slider-track-fill {
+  background-color: #007bff; /* Replace with your desired active track color */
+}
+
+/* Change the tick marks color */
+.mat-slider-ticks {
+  background-color: #007bff; /* Replace with your desired tick marks color */
+}
+
+/* Change the value indicator color */
+.mat-slider-thumb-label {
+  background-color: #007bff; /* Replace with your desired value indicator color */
+  color: #fff; /* Replace with the desired text color for the value indicator */
+}

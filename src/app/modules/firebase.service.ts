@@ -11,6 +11,29 @@ import { map } from 'rxjs';
   providedIn: 'root'
 })
 export class FirebaseService {
+  sendDataToFirebase(isLedOn: boolean) {
+    this.fireStoreService.collection('ledStatus').doc('ledDocument').set({
+      isLedOn: isLedOn,
+    }, { merge: true }) // Use merge option to update or add if not exists
+    .then(() => {
+      console.log('LED status data updated or added');
+    })
+    .catch((error) => {
+      console.error('Error updating LED status data: ', error);
+    });
+  }
+
+  sendSliderValue(newValue: number) {
+    this.fireStoreService.collection('sliderValue').doc('slide_document').set({
+      value: newValue,
+    }, { merge: true }) // Use merge option to update or add if not exists
+    .then(() => {
+      console.log('Slider value data updated or added');
+    })
+    .catch((error) => {
+      console.error('Error updating slider value data: ', error);
+    });
+  }
 
 
   private temperatureCollection!: AngularFirestoreCollection<temperatureModel>;
@@ -27,8 +50,8 @@ export class FirebaseService {
           actions.map((a) => {
             let temperatureData = a.payload.doc.data() as temperatureModel;
             let id = a.payload.doc.id;
-            console.log("temp data: ");
-            console.log(temperatureData);
+            // console.log("temp data: ");
+            // console.log(temperatureData);
             
             
             return {

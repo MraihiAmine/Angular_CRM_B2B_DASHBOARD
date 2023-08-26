@@ -2,17 +2,37 @@ import { Injectable } from '@angular/core';
 import { FirebaseService } from './firebase.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
+  private apiUrl = 'http://localhost:3000'; // Replace this with your Express server URL
+
   bigChart: any[];
   pieChartData: any[];
 
-  constructor(private fireBaseService: FirebaseService) {
+  constructor(
+    private fireBaseService: FirebaseService,
+    private http: HttpClient
+  ) {
     this.bigChart = [];
     this.pieChartData = [];
+  }
+
+  publishMessage(message: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:4200'
+    });
+
+    return this.http.post(`${this.apiUrl}/publish`, { message }, { headers });
+  }
+
+  // Method to retrieve the MQTT topic and last published message
+  getMessage(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/message`);
   }
 
   getBigChart(): Observable<any[]> {

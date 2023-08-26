@@ -1,0 +1,66 @@
+<div fxLayout="column" fxLayoutAlign="center center" class="button-toggle">
+  <div class="awesome-text">Select the type of connection</div>
+  <mat-button-toggle-group [(ngModel)]="communicationMethod">
+    <mat-button-toggle value="firebase">Firebase</mat-button-toggle>
+    <mat-button-toggle value="mqtt">MQTT</mat-button-toggle>
+  </mat-button-toggle-group>
+</div>
+
+<!-- Rest of the content -->
+
+<div
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+  fxLayoutGap="20px"
+  class="stats-cards"
+>
+  <div fxFlex="50">
+    <mat-slide-toggle (change)="toggleLed()"></mat-slide-toggle>
+    <div style="margin-top: 8px">LED is {{ isLedOn ? "ON" : "OFF" }}</div>
+  </div>
+  <div fxFlex="50" fxFill>
+    <img
+      [src]="isLedOn ? 'assets/images/led_on.jpg' : 'assets/images/led_off.jpg'"
+      alt="LED Image"
+      style="width: 150px; height: 200px"
+    />
+  </div>
+</div>
+<br />
+<br />
+<div
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+  fxLayoutGap="20px"
+  class="stats-cards"
+>
+  <div fxFlex="50">
+    <!-- slider for setting the degree -->
+    <div class="slider-container">
+      <mat-slider
+        class="example-margin"
+        [disabled]="disabled"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [discrete]="thumbLabel"
+        [showTickMarks]="showTicks"
+        (input)="onSliderInput()"
+      >
+        <input matSliderThumb [(ngModel)]="valueSlider" #slider />
+      </mat-slider>
+
+      <!-- Display the valueSlider of the slider -->
+      <div>Slider valueSlider: {{ valueSlider }}</div>
+    </div>
+  </div>
+  <div fxFlex="50" fxFill>
+    <img
+      [src]="getImageSource()"
+      alt="LED Image"
+      style="width: 150px; height: 200px"
+    />
+  </div>
+</div>
+
+<!-- material-slider.component.html -->

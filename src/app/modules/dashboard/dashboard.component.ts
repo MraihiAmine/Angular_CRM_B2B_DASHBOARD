@@ -11,7 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { EventEmitter, Output } from '@angular/core';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { FirebaseService } from '../firebase.service';
-
+import { MqttService, IMqttMessage } from 'ngx-mqtt';
 export interface TemperatureElement {
   category: string;
   temperature: number;
@@ -39,6 +39,10 @@ export class DashboardComponent implements OnInit {
     { temperature: 20, category: 'low' },
   ];
 
+  topic = 'test/hello'; // Replace with the topic the Python subscriber is listening to
+  message: string = 'Hello from Angular!'; // Replace with the message you want to publish
+
+
   ELEMENT_DATA: TemperatureElement[] = [];
 
   displayedColumns: string[] = ['temperature', 'category'];
@@ -51,12 +55,31 @@ export class DashboardComponent implements OnInit {
   constructor(
     public dashboardService: DashboardService,
     private overlay: OverlayContainer,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private mqttService: MqttService
   ) {}
   sendDarkModeValueToWidget() {
     // Assuming you have an output property called 'darkModeChanged' in the 'app-widget-area' component
     this.darkModeChanged.emit(this.isDarkMode);
   }
+
+  getMessage() {
+    this.dashboardService.getMessage().subscribe((response) => {
+      console.log('response.message', response.message);
+    });
+  }
+
+  publishMessage() {
+    this.mqttService.publish(this.topic, this.message).subscribe({
+      next: () => {
+        console.log('Message published successfully!');
+      },
+      error: (error) => {
+        console.error('Failed to publish message:', error);
+      }
+    });
+  }
+
   onDarkModeChanged(isDarkMode: boolean) {
     // Handle the received dark mode value here
     // You can perform any necessary actions based on the value
@@ -65,7 +88,9 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.firebaseService.addFakeTemperatureData();
+    this.mqttService.connect();
+    this.publishMessage()
+
     console.log('this.tableData');
     console.log(this.tableData);
 
